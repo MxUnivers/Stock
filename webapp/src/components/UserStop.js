@@ -4,7 +4,7 @@ export default function UserStop(props) {
     const nombre = [1, 2, 3,4,5,6,7,8]
     return (
       <div >
-      <div><Link to={props.to}><button  type='button' className="block w-24 bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 hover:underline">Retour</button></Link></div>
+      <div><Link to={"/dashboard"}><button  type='button' className="block w-24 bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 hover:underline">Retour</button></Link></div>
          
       <div className='flex row  bg-black'>
          <div className=" relative m-2 ">
