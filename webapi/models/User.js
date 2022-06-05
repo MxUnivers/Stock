@@ -1,8 +1,9 @@
 
-
 const mongoose =  require('mongoose'); 
 const jwt =  require("jsonwebtoken"); 
 const bcrypt =  require("bcryptjs"); 
+const  dotenv =  require("dotenv")
+dotenv.config();
 
 
 const UserShema =  new mongoose.Schema({
@@ -47,15 +48,23 @@ const UserShema =  new mongoose.Schema({
     tokens:[{
         token:{
             type:String , 
-            required : true 
+            default:""
         },
         status:{
             type:String , 
             enum : {values :['active' , 'trashed'] },
-            required : true 
+            default:""
         }
 
-    }]
+    }] ,
+    token : {
+        type:String ,
+        default:""
+    },
+    status : {
+        type :String,
+        enum : {values :['active' ,  'trashed']}
+    }
     
 },{timestamp : true} );
 
@@ -65,18 +74,14 @@ UserShema.methods.generateAuthToken =  async function()  {
     const token =  jwt.sign({ id: user._id.toString() }, process.env.TWT_SCRIPT);
     user.tokens =  user.tokens.concat({token ,  status:'active'});
     await user.save();
-}
-// 
+}// 
 UserShema.pre('save' ,  async function(next){
     const user  =  this;
-
     if(user.isModified("password")){
-        user.password =  await bcrypt.hash(user.password , 8)
+        user.password =  await bcrypt.hash(user.password , 8);
     }
-
     next();
 })
-
 
 UserShema.virtual("virtuelVar").get(
     ()=>{
